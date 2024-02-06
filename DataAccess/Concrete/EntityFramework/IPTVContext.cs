@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,30 @@ public class IPTVContext:DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Channel>(channel =>
+        {
+            channel.HasIndex(c => c.CategoryId).IsUnique(false); // Channel sınıfında bulunan CategoryId özelliği için bir index oluşturuluyor.
+                                                                 // IsUnique(false) ile bu index'in benzersiz olmadığı belirtiliyor.
+                                                                 // Yani aynı CategoryId'ye sahip birden fazla Channel olabilir.
+            channel.HasOne<Category>() 
+            .WithMany()
+            .HasForeignKey(c => c.CategoryId) // ilişki 
+            .OnDelete(DeleteBehavior.Restrict)//silerkenki davranış (Restrict alt klasörü boşaltmadan silme Cascade tamamını siler
+            .IsRequired();//BrandId i vritabınında bulunan karşılığına göre getirir
+        });
+
+        modelBuilder.Entity<Category>(category =>
+        {
+            category.HasIndex(c=> c.ChannelTypeId).IsUnique(false);
+            category.HasOne<Category>()
+            .WithMany()
+             .HasForeignKey(c => c.ChannelTypeId) 
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
+
+        });
+
 
         // Channel - Category ilişkisi
         modelBuilder.Entity<Channel>()
@@ -42,13 +67,7 @@ public class IPTVContext:DbContext
             .OnDelete(DeleteBehavior.Restrict)      // Kategori silindiğinde bu kategorinin bağlı olduğu kanalları silme (Opsiyonel, gerektiğine göre değiştirilebilir)
             .IsRequired();                           // CategoryId zorunlu bir alan, yani her bir Channel mutlaka bir kategoriye ait olmalı
 
-        // Diğer ilişki tanımlamaları
-        modelBuilder.Entity<ChannelType>()
-            .HasMany(ct => ct.Categories)            // Bir ChannelType'in birden fazla Category'si olabilir
-            .WithOne(c => c.ChannelType)             // Her bir Category, bir ChannelType'a ait olacak
-            .HasForeignKey(c => c.ChannelTypeId)    // Foreign key olarak ChannelTypeId kullanılacak
-            .OnDelete(DeleteBehavior.Restrict)      // ChannelType silindiğinde bağlı olduğu Category'leri silme (Opsiyonel, gerektiğine göre değiştirilebilir)
-            .IsRequired();                           // ChannelTypeId zorunlu bir alan, yani her bir Category mutlaka bir ChannelType'a ait olmalı
+          
 
        
     }
