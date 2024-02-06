@@ -1,6 +1,8 @@
-﻿namespace Entities;
+﻿using Core.Entities;
 
-public class Comment
+namespace Entities;
+
+public class Comment:IEntity
 {
     public int Id { get; set; }
     public string Text { get; set; }
