@@ -12,4 +12,6 @@ public class Category:IEntity
     public int Id { get; set; }
     public int ChannelTypeId { get; set; }
     public string Name { get; set; }
+    public ChannelType ChannelType { get; set; }
+    public List<Channel> Channels { get; set;}
 }

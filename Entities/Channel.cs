@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,9 @@ public class Channel:IEntity
     public string Name { get; set; }
     public string? Description { get; set; }
     public string Url { get; set; }
+ 
+    public Category Category { get; set; }
+
+   
 
 }
