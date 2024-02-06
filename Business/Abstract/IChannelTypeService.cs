@@ -4,7 +4,7 @@ namespace Business.Abstract;
 
 public interface IChannelTypeService
 {
-    Task<IQueryable<ChannelType>> GetAll();
+    Task<IQueryable<ChannelType>> GetAllAsync();
     Task<ChannelType> GetByIdAsync(int id);
     Task<ChannelType> AddAsync(ChannelType channelType);
     Task<ChannelType> UpdateAsync(ChannelType channelType);

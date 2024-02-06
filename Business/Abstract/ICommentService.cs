@@ -4,7 +4,7 @@ namespace Business.Abstract;
 
 public interface ICommentService
 {
-    Task<IQueryable<Comment>> GetAll();
+    Task<IQueryable<Comment>> GetAllAsync();
     Task<Comment> GetByIdAsync(int id);
     Task<Comment> AddAsync(Comment comment);
     Task<Comment> UpdateAsync(Comment comment);

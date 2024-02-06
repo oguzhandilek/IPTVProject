@@ -9,7 +9,7 @@ namespace Business.Abstract;
 
 public interface IBroadcastService
 {
-   Task<IQueryable<Broadcast>> GetAll();
+   Task<IQueryable<Broadcast>> GetAllAsync();
     Task<Broadcast> GetByIdAsync(int id);
     Task<Broadcast> AddAsync(Broadcast broadcast);
     Task<Broadcast> UpdateAsync(Broadcast broadcast);

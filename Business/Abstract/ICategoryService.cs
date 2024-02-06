@@ -4,7 +4,7 @@ namespace Business.Abstract;
 
 public interface ICategoryService
 {
-    Task<IQueryable<Category>> GetAll();
+    Task<IQueryable<Category>> GetAllAsync();
     Task<Category> GetByIdAsync(int id);
     Task<Category> AddAsync(Category category);
     Task<Category> UpdateAsync(Category category);
