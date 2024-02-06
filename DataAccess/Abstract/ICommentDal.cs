@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract;
 
-public interface ICommnetDal:IEntityRepository<Comment>
+public interface ICommentDal:IEntityRepository<Comment>
 {
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCommentDal:EfEntityRepositoryBase<Comment,IPTVContext>,ICommnetDal
+    public class EfCommentDal:EfEntityRepositoryBase<Comment,IPTVContext>,ICommentDal
     {
     }
 }
