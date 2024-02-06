@@ -17,4 +17,3 @@ public class Channel:IEntity
     public string Url { get; set; }
 
 }
-
