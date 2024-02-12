@@ -49,7 +49,7 @@ public class IPTVContext:DbContext
         modelBuilder.Entity<Category>(category =>
         {
             category.HasIndex(c=> c.ChannelTypeId).IsUnique(false);
-            category.HasOne<Category>()
+            category.HasOne<ChannelType>()
             .WithMany()
              .HasForeignKey(c => c.ChannelTypeId) 
             .OnDelete(DeleteBehavior.Restrict)
@@ -58,14 +58,47 @@ public class IPTVContext:DbContext
 
         });
 
+        modelBuilder.Entity<Broadcast>(broadcast => 
+        {
+            broadcast.HasIndex(c => c.ChannelId).IsUnique(false);
+            broadcast.HasOne<Channel>()
+            .WithMany()
+            .HasForeignKey(c => c.ChannelId)
+            .IsRequired();
+        });
+        modelBuilder.Entity<ChannelInteraction>(channel =>
+        {
+            channel.HasIndex(c => c.ChannelId).IsUnique();
+            channel.HasOne<Channel>()
+            .WithOne()
+            .HasForeignKey<ChannelInteraction>(c => c.ChannelId)
+            .IsRequired();
+        });
+        modelBuilder.Entity<Comment>(comment =>
+        {
+            comment.HasIndex(c => c.ChannelId).IsUnique();
+            comment.HasOne<Channel>()
+            .WithMany()
+            .HasForeignKey(c=>c.ChannelId)
+            .IsRequired();
 
-        // Channel - Category ilişkisi
-        modelBuilder.Entity<Channel>()
-            .HasOne(c => c.Category)                  // Her bir Channel, bir Category'ye ait olacak
-            .WithMany()                              // Her bir Category'nin birden fazla Channel'i olabilir
-            .HasForeignKey(c => c.CategoryId)       // Foreign key olarak CategoryId kullanılacak
-            .OnDelete(DeleteBehavior.Restrict)      // Kategori silindiğinde bu kategorinin bağlı olduğu kanalları silme (Opsiyonel, gerektiğine göre değiştirilebilir)
-            .IsRequired();                           // CategoryId zorunlu bir alan, yani her bir Channel mutlaka bir kategoriye ait olmalı
+        });
+        modelBuilder.Entity<FavoriteChannel>(channel =>
+        {
+            channel.HasIndex(c => c.UserId).IsUnique(false);
+            channel.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(c => c.UserId)
+            .IsRequired();
+        });
+
+        //// Channel - Category ilişkisi
+        //modelBuilder.Entity<Channel>()
+        //    .HasOne(c => c.Category)                  // Her bir Channel, bir Category'ye ait olacak
+        //    .WithMany()                              // Her bir Category'nin birden fazla Channel'i olabilir
+        //    .HasForeignKey(c => c.CategoryId)       // Foreign key olarak CategoryId kullanılacak
+        //    .OnDelete(DeleteBehavior.Restrict)      // Kategori silindiğinde bu kategorinin bağlı olduğu kanalları silme (Opsiyonel, gerektiğine göre değiştirilebilir)
+        //    .IsRequired();                           // CategoryId zorunlu bir alan, yani her bir Channel mutlaka bir kategoriye ait olmalı
 
           
 
